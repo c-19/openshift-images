@@ -1,0 +1,23 @@
+version: "3"
+services:
+  testapp:
+    image: io.c19.test/test-app-01
+    deploy:
+      replicas: 2
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+      - "5555:5555"
+    networks:
+      - webnet
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "7080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+networks:
+  webnet:
